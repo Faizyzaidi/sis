@@ -11,8 +11,8 @@ function AddStudent() {
     e.preventDefault();
     try {
       await databases.createDocument(
-        'your_database_id', // Replace with your database ID
-        'your_students_collection_id', // Replace with your collection ID
+        '13871003261660f7d', // Replace with your database ID
+        '670138a900217667d050', // Replace with your collection ID
         'unique()', // Document ID (unique identifier)
         { name, email, avatar }
       );
