@@ -13,12 +13,14 @@ function Signup({ onSignup }) {
     e.preventDefault();
     try {
       await account.create('unique()', email, password, name);
-      onSignup(); // Trigger signup in App.js
+      console.log('User created:', { name, email, password });
+
+    onSignup(); // Trigger signup in App.js
       navigate('/dashboard'); // Redirect to Dashboard
-    } catch (error) {
-      console.error('Signup failed', error);
-      alert('Signup failed. Please try again.');
-    }
+          }      catch (error) {
+        console.error('Signup failed:', error.message || error);
+        alert('Signup failed. Please try again.');
+      }
   };
 
   return (

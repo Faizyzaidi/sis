@@ -1,7 +1,6 @@
 // src/components/StudentList.js
 import React, { useState, useEffect } from 'react';
-//import { databases } from '../appwrite';  // Import Appwrite database instance
-import { account, databases } from '../appwrite';
+import {account,databases } from '../appwrite';
 import { useNavigate } from 'react-router-dom';
 
 function StudentList() {

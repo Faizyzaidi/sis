@@ -1,7 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 //import { account } from '../appwrite';
-import { account, databases } from '../appwrite';
+import { account , databases } from '../appwrite';
 import { useNavigate } from 'react-router-dom';
 
 function Login({ onLogin }) {
@@ -12,13 +12,15 @@ function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await account.createEmailSession(email, password);
+      console.log(email, password); // For debugging
+      await account.createSession(email, password);
       onLogin(); // Trigger login in App.js
       navigate('/dashboard'); // Redirect to Dashboard
-    } catch (error) {
-      console.error('Login failed', error);
-      alert('Login failed. Please try again.');
+    }catch (error) {
+      console.error('Login failed', error.message || error.response || error);
+      alert(`Login failed: ${error.message || 'Please try again.'}`);
     }
+    
   };
 
   return (
