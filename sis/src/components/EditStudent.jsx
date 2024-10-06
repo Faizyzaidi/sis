@@ -1,6 +1,7 @@
 // src/components/EditStudent.js
 import React, { useState, useEffect } from 'react';
-import { databases } from '../appwrite';
+//import { databases } from './appwrite/appwrite';
+import { account, databases } from '../appwrite';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function EditStudent() {
@@ -15,8 +16,8 @@ function EditStudent() {
     const fetchStudent = async () => {
       try {
         const response = await databases.getDocument(
-          'your_database_id', // Replace with your database ID
-          'your_students_collection_id', // Replace with your collection ID
+          '67013871003261660f7d', // Replace with your database ID
+          '670138a900217667d050', // Replace with your collection ID
           id
         );
         setName(response.name);

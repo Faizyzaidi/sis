@@ -1,6 +1,7 @@
 // src/components/StudentList.js
 import React, { useState, useEffect } from 'react';
-import { databases } from '../appwrite';  // Import Appwrite database instance
+//import { databases } from '../appwrite';  // Import Appwrite database instance
+import { account, databases } from '../appwrite';
 import { useNavigate } from 'react-router-dom';
 
 function StudentList() {
@@ -12,8 +13,8 @@ function StudentList() {
     const fetchStudents = async () => {
       try {
         const response = await databases.listDocuments(
-          'your_database_id', // Replace with your database ID
-          'your_students_collection_id' // Replace with your collection ID
+          '67013871003261660f7d', // Replace with your database ID
+          '670138a900217667d050' // Replace with your collection ID
         );
         setStudents(response.documents);
       } catch (error) {
