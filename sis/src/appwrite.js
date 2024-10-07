@@ -1,14 +1,16 @@
+
 // src/appwrite.js
-import { Client, Account, Databases } from 'appwrite';
+import { Client, Account, Databases, Permission, Role } from 'appwrite';
 
-const client = new Client();
+// Initialize the Appwrite client
+const client = new Client()
+    .setEndpoint('https://cloud.appwrite.io/v1') // Replace with your Appwrite API endpoint
+    .setProject('670136be0002793ac774'); // Replace with your Appwrite project ID
 
-client
-    .setEndpoint('https://cloud.appwrite.io/v1') // Your Appwrite Endpoint
-    .setProject('670136be0002793ac774'); // Your project ID
-
-// Create instances for Account and Database
+// Create instances of Account and Databases services
 const account = new Account(client);
 const databases = new Databases(client);
 
-export { account, databases };
+// Exporting Permission and Role as well for use in other parts of your app
+export { client, account, databases, Permission, Role };
+

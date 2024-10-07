@@ -1,7 +1,8 @@
 // src/components/AddStudent.js
 import React, { useState } from 'react';
 //import { databases } from '../appwri
-import { account, databases } from '../appwrite';
+import { account, databases, Permission, Role } from '../appwrite';
+
 
 function AddStudent() {
   const [name, setName] = useState('');
