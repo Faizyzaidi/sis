@@ -1,58 +1,43 @@
 // src/components/Signup.js
 import React, { useState } from 'react';
-import { account } from '../appwrite';
 import { useNavigate } from 'react-router-dom';
 
 function Signup({ onSignup }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
-    try {
-      await account.create('unique()', email, password, name);
-      console.log('User created:', { name, email, password });
-
-    onSignup(); // Trigger signup in App.js
-      navigate('/dashboard'); // Redirect to Dashboard
-          }      catch (error) {
-        console.error('Signup failed:', error.message || error);
-        alert('Signup failed. Please try again.');
-      }
+    if (username && password) {
+      onSignup();
+      navigate('/dashboard');
+    } else {
+      alert('Please fill in all fields.');
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl mb-6">Signup</h2>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="block w-full mb-4 p-3 border rounded-lg"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="block w-full mb-4 p-3 border rounded-lg"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="block w-full mb-4 p-3 border rounded-lg"
-        />
-        <button type="submit" className="bg-blue-500 text-white w-full py-2 rounded-lg">
-          Signup
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSignup} className="p-8">
+      <h2 className="text-2xl mb-4">Sign Up</h2>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="block w-full mb-4 p-2 border"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="block w-full mb-4 p-2 border"
+      />
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2">
+        Sign Up
+      </button>
+    </form>
   );
 }
 

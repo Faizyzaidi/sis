@@ -1,6 +1,6 @@
 // src/App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -10,32 +10,57 @@ import StudentList from './components/StudentList';
 import Dashboard from './components/Dashboard';
 
 function App() {
-  // State to track if the user is logged in or is a guest
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
+  const [students, setStudents] = useState([]);
 
-  // Function to handle login/signup (set isAuthenticated to true)
+  useEffect(() => {
+    const storedStudents = JSON.parse(localStorage.getItem('students')) || [];
+    setStudents(storedStudents);
+  }, []);
+
   const handleLogin = (guest = false) => {
     setIsAuthenticated(true);
     setIsGuest(guest);
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setIsGuest(false);
+  };
+
+  const addStudent = (student) => {
+    const updatedStudents = [...students, student];
+    setStudents(updatedStudents);
+    localStorage.setItem('students', JSON.stringify(updatedStudents));
+  };
+
+  const updateStudent = (index, updatedStudent) => {
+    const updatedStudents = students.map((student, i) => (i === index ? updatedStudent : student));
+    setStudents(updatedStudents);
+    localStorage.setItem('students', JSON.stringify(updatedStudents));
+  };
+
   return (
     <Router>
       <nav className="p-4 bg-gray-800 text-white">
-        <a href="/" className="mr-4">Home</a>
-        {!isAuthenticated && !isGuest && <a href="/login" className="mr-4">Login</a>}
-        {!isAuthenticated && !isGuest && <a href="/signup" className="mr-4">Signup</a>}
-        {(isAuthenticated || isGuest) && <a href="/dashboard" className="mr-4">Dashboard</a>}
-        {(isAuthenticated || isGuest) && <a href="/add-student" className="mr-4">Add Student</a>}
-        {(isAuthenticated || isGuest) && <a href="/students" className="mr-4">Student List</a>}
+        <Link to="/" className="mr-4">Home</Link>
+        {!isAuthenticated && !isGuest && <Link to="/login" className="mr-4">Login</Link>}
+        {!isAuthenticated && !isGuest && <Link to="/signup" className="mr-4">Signup</Link>}
+        {(isAuthenticated || isGuest) && <Link to="/dashboard" className="mr-4">Dashboard</Link>}
+        {(isAuthenticated || isGuest) && <Link to="/add-student" className="mr-4">Add Student</Link>}
+        {(isAuthenticated || isGuest) && <Link to="/students" className="mr-4">Student List</Link>}
+        {(isAuthenticated || isGuest) && <button onClick={handleLogout} className="mr-4">Logout</button>}
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login onLogin={() => handleLogin(false)} onGuestLogin={() => handleLogin(true)} />} />
+        <Route
+          path="/login"
+          element={<Login onLogin={() => handleLogin(false)} onGuestLogin={() => handleLogin(true)} />}
+        />
         <Route path="/signup" element={<Signup onSignup={() => handleLogin(false)} />} />
-        
+
         {/* Allow guest and authenticated users to access these routes */}
         <Route
           path="/dashboard"
@@ -43,15 +68,15 @@ function App() {
         />
         <Route
           path="/add-student"
-          element={isAuthenticated || isGuest ? <AddStudent /> : <Navigate to="/login" />}
+          element={isAuthenticated || isGuest ? <AddStudent onAddStudent={addStudent} /> : <Navigate to="/login" />}
         />
         <Route
           path="/edit-student/:id"
-          element={isAuthenticated || isGuest ? <EditStudent /> : <Navigate to="/login" />}
+          element={isAuthenticated || isGuest ? <EditStudent students={students} onUpdateStudent={updateStudent} /> : <Navigate to="/login" />}
         />
         <Route
           path="/students"
-          element={isAuthenticated || isGuest ? <StudentList /> : <Navigate to="/login" />}
+          element={isAuthenticated || isGuest ? <StudentList students={students} /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

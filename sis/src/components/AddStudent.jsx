@@ -1,33 +1,35 @@
 // src/components/AddStudent.js
 import React, { useState } from 'react';
-//import { databases } from '../appwri
-import { account, databases, Permission, Role } from '../appwrite';
 
-
-function AddStudent() {
+function AddStudent({ onAddStudent }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await databases.createDocument(
-        '13871003261660f7d', // Replace with your database ID
-        '670138a900217667d050', // Replace with your collection ID
-        'unique()', // Document ID (unique identifier)
-        { name, email, avatar }
-      );
-      alert('Student added successfully!');
-    } catch (error) {
-      console.error('Error adding student', error);
-      alert('Failed to add student.');
+    setError(''); // Reset error message
+
+    // Basic form validation
+    if (!name || !email || !avatar) {
+      setError('All fields are required!');
+      return;
     }
+
+    // Call the parent function to add student
+    onAddStudent({ name, email, avatar });
+
+    // Clear form fields
+    setName('');
+    setEmail('');
+    setAvatar('');
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-8">
       <h2 className="text-2xl mb-4">Add New Student</h2>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
       <input
         type="text"
         placeholder="Name"

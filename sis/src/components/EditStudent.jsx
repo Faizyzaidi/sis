@@ -1,51 +1,34 @@
 // src/components/EditStudent.js
 import React, { useState, useEffect } from 'react';
-//import { databases } from './appwrite/appwrite';
-import { account, databases } from '../appwrite';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function EditStudent() {
-  const { id } = useParams(); // Get student ID from URL
+function EditStudent({ students, onUpdateStudent }) {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const studentIndex = parseInt(id);
+  const student = students[studentIndex];
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
-    const fetchStudent = async () => {
-      try {
-        const response = await databases.getDocument(
-          '67013871003261660f7d', // Replace with your database ID
-          '670138a900217667d050', // Replace with your collection ID
-          id
-        );
-        setName(response.name);
-        setEmail(response.email);
-        setAvatar(response.avatar);
-      } catch (error) {
-        console.error('Failed to fetch student', error);
-      }
-    };
-
-    fetchStudent();
-  }, [id]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await databases.updateDocument(
-        'your_database_id', // Replace with your database ID
-        'your_students_collection_id', // Replace with your collection ID
-        id,
-        { name, email, avatar }
-      );
-      alert('Student updated successfully!');
-      navigate('/students'); // Redirect back to student list
-    } catch (error) {
-      console.error('Failed to update student', error);
-      alert('Failed to update student.');
+    if (student) {
+      setName(student.name);
+      setEmail(student.email);
+      setAvatar(student.avatar);
     }
+  }, [student]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !email || !avatar) {
+      alert('All fields are required!');
+      return;
+    }
+
+    onUpdateStudent(studentIndex, { name, email, avatar });
+    navigate('/students'); // Redirect to student list after update
   };
 
   return (

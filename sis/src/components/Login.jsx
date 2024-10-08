@@ -1,66 +1,52 @@
 // src/components/Login.js
 import React, { useState } from 'react';
-import { account } from '../appwrite'; // Ensure you have initialized Appwrite's account service
 import { useNavigate } from 'react-router-dom';
 
 function Login({ onLogin, onGuestLogin }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      console.log(email, password); // For debugging
-      await account.createSession(email, password);
-      onLogin(); // Trigger login in App.js
-      navigate('/dashboard'); // Redirect to Dashboard
-    } catch (error) {
-      console.error('Login failed', error.message || error.response || error);
-      alert(`Login failed: ${error.message || 'Please try again.'}`);
+    // Simple check for username/password (you can enhance this with better validation)
+    if (username && password) {
+      onLogin();
+      navigate('/dashboard');
+    } else {
+      alert('Please enter your username and password.');
     }
   };
 
-  const handleGuestLogin = async () => {
-    try {
-      onGuestLogin(); // Set the app to guest mode
-      navigate('/dashboard'); // Redirect to Dashboard as guest
-    } catch (error) {
-      console.error('Guest login failed', error.message || error.response || error);
-      alert(`Guest login failed: ${error.message || 'Please try again.'}`);
-    }
+  const handleGuestLogin = () => {
+    onGuestLogin();
+    navigate('/dashboard');
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl mb-6">Login</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="block w-full mb-4 p-3 border rounded-lg"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="block w-full mb-4 p-3 border rounded-lg"
-        />
-        <button type="submit" className="bg-blue-500 text-white w-full py-2 rounded-lg mb-4">
-          Login
-        </button>
-        <button
-          type="button"
-          onClick={handleGuestLogin}
-          className="bg-gray-500 text-white w-full py-2 rounded-lg"
-        >
-          Login as Guest
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleLogin} className="p-8">
+      <h2 className="text-2xl mb-4">Login</h2>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="block w-full mb-4 p-2 border"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="block w-full mb-4 p-2 border"
+      />
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2 mr-2">
+        Login
+      </button>
+      <button type="button" onClick={handleGuestLogin} className="bg-gray-500 text-white px-4 py-2">
+        Continue as Guest
+      </button>
+    </form>
   );
 }
 
