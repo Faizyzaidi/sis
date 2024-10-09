@@ -24,7 +24,7 @@ function Login({ onLogin, onGuestLogin }) {
   };
 
   return (
-    <form onSubmit={handleLogin} className="p-8">
+    <form onSubmit={handleLogin} className="p-8 w-" >
       <h2 className="text-2xl mb-4">Login</h2>
       <input
         type="text"
