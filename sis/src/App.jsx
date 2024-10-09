@@ -8,6 +8,7 @@ import AddStudent from './components/AddStudent';
 import EditStudent from './components/EditStudent';
 import StudentList from './components/StudentList';
 import Dashboard from './components/Dashboard';
+import logo from './assets/logo.png'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -43,8 +44,12 @@ function App() {
 
   return (
     <Router>
-      <nav className="p-4 bg-gray-800 text-white">
-        <Link to="/" className="mr-4">Home</Link>
+      <nav className="p-2  text-white bg-blue-400 flex justify-between	">
+         <div className='flex '>
+          <img className ="h-10 rounded-sm ml-4" src={logo} alt="" />
+          <h1 className='text-white text-4xl ml-1'>SIS</h1>
+         </div>
+        <Link to="/" className="mr-4 text-3xl ">Home</Link>
         {!isAuthenticated && !isGuest && <Link to="/login" className="mr-4">Login</Link>}
         {!isAuthenticated && !isGuest && <Link to="/signup" className="mr-4">Signup</Link>}
         {(isAuthenticated || isGuest) && <Link to="/dashboard" className="mr-4">Dashboard</Link>}
