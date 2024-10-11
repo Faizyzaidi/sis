@@ -55,10 +55,11 @@ function App() {
             Sign Up
           </Link>
         )}
-        {isAuthenticated && <Link to="/dashboard" className="mr-4">Dashboard</Link>}
-        {isAuthenticated && <Link to="/add-student" className="mr-4">Add Student</Link>}
-        {isAuthenticated && <Link to="/students" className="mr-4">Student List</Link>}
-        {isAuthenticated && <button onClick={handleLogout} className="mr-4">Logout</button>}
+        {isAuthenticated && <Link to="/dashboard" className="mr-4 text-3xl hover:text-black">Dashboard</Link>}
+        {isAuthenticated && <Link to="/add-student" className="mr-4 text-3xl hover:text-black">Add Student</Link>}
+        {isAuthenticated && <Link to="/students" className="mr-4 text-3xl hover:text-black">Student List</Link>}
+        {isAuthenticated && <button onClick={handleLogout} className="mr-4 bg-green-500 text-white py-1 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+                                          >Logout</button>}
       </nav>
 
       <Routes>

@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 function Signup({ onSignup }) {
-  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    if (username && password) {
+    if (firstName && lastName && email && password) {
       onSignup();
       navigate('/dashboard');
     } else {
@@ -36,35 +38,32 @@ function Signup({ onSignup }) {
                   <input
                     type="text"
                     placeholder="First name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
                     type="text"
                     placeholder="Last name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <input
                   type="email"
                   placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="border border-gray-300 rounded-lg py-2 px-4 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                   type="password"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="border border-gray-300 rounded-lg py-2 px-4 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <div className="flex items-center justify-center mb-4">
-                  <input
-                    type="checkbox"
-                    id="newsletter"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mr-2"
-                    defaultChecked
-                  />
-                  <label htmlFor="newsletter" className="text-sm">
-                    Subscribe to our newsletter
-                  </label>
-                </div>
                 <button
                   type="submit"
                   className="bg-blue-500 text-white px-6 py-2 rounded-lg w-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
