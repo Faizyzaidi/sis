@@ -8,11 +8,10 @@ import AddStudent from './components/AddStudent';
 import EditStudent from './components/EditStudent';
 import StudentList from './components/StudentList';
 import Dashboard from './components/Dashboard';
-import logo from './assets/logo.png'
+import logo from './assets/logo.png';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isGuest, setIsGuest] = useState(false);
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
@@ -20,14 +19,12 @@ function App() {
     setStudents(storedStudents);
   }, []);
 
-  const handleLogin = (guest = false) => {
+  const handleLogin = () => {
     setIsAuthenticated(true);
-    setIsGuest(guest);
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setIsGuest(false);
   };
 
   const addStudent = (student) => {
@@ -44,44 +41,47 @@ function App() {
 
   return (
     <Router>
-      <nav className="p-2  text-white bg-blue-400 flex justify-between	">
-         <div className='flex '>
-          <img className ="h-10 rounded-sm ml-4" src={logo} alt="" />
-          <h1 className='text-white text-4xl ml-1'>SIS</h1>
-         </div>
-        <Link to="/" className="mr-4 text-3xl ">Home</Link>
-        {!isAuthenticated && !isGuest && <Link to="/login" className="mr-4">Login</Link>}
-        {!isAuthenticated && !isGuest && <Link to="/signup" className="mr-4">Signup</Link>}
-        {(isAuthenticated || isGuest) && <Link to="/dashboard" className="mr-4">Dashboard</Link>}
-        {(isAuthenticated || isGuest) && <Link to="/add-student" className="mr-4">Add Student</Link>}
-        {(isAuthenticated || isGuest) && <Link to="/students" className="mr-4">Student List</Link>}
-        {(isAuthenticated || isGuest) && <button onClick={handleLogout} className="mr-4">Logout</button>}
+      <nav className="p-2 text-white bg-blue-400 flex justify-between">
+        <div className="flex">
+          <img className="h-10 rounded-sm ml-4" src={logo} alt="Logo" />
+          <h1 className="text-white text-4xl ml-1">SIS</h1>
+        </div>
+        <Link to="/" className="mr-4 text-3xl hover:text-black">Home</Link>
+        {!isAuthenticated && (
+          <Link
+            to="/signup"
+            className="mr-4 bg-green-500 text-white py-1 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+          >
+            Sign Up
+          </Link>
+        )}
+        {isAuthenticated && <Link to="/dashboard" className="mr-4">Dashboard</Link>}
+        {isAuthenticated && <Link to="/add-student" className="mr-4">Add Student</Link>}
+        {isAuthenticated && <Link to="/students" className="mr-4">Student List</Link>}
+        {isAuthenticated && <button onClick={handleLogout} className="mr-4">Logout</button>}
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="/login"
-          element={<Login onLogin={() => handleLogin(false)} onGuestLogin={() => handleLogin(true)} />}
-        />
-        <Route path="/signup" element={<Signup onSignup={() => handleLogin(false)} />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/signup" element={<Signup onSignup={handleLogin} />} />
 
-        {/* Allow guest and authenticated users to access these routes */}
+        {/* Routes for authenticated users only */}
         <Route
           path="/dashboard"
-          element={isAuthenticated || isGuest ? <Dashboard /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
         />
         <Route
           path="/add-student"
-          element={isAuthenticated || isGuest ? <AddStudent onAddStudent={addStudent} /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <AddStudent onAddStudent={addStudent} /> : <Navigate to="/login" />}
         />
         <Route
           path="/edit-student/:id"
-          element={isAuthenticated || isGuest ? <EditStudent students={students} onUpdateStudent={updateStudent} /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <EditStudent students={students} onUpdateStudent={updateStudent} /> : <Navigate to="/login" />}
         />
         <Route
           path="/students"
-          element={isAuthenticated || isGuest ? <StudentList students={students} /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <StudentList students={students} /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

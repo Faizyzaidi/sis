@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login({ onLogin, onGuestLogin }) {
+function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -18,35 +18,35 @@ function Login({ onLogin, onGuestLogin }) {
     }
   };
 
-  const handleGuestLogin = () => {
-    onGuestLogin();
-    navigate('/dashboard');
-  };
-
   return (
-    <form onSubmit={handleLogin} className="p-8 w-" >
-      <h2 className="text-2xl mb-4">Login</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="block w-full mb-4 p-2 border"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="block w-full mb-4 p-2 border"
-      />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 mr-2">
-        Login
-      </button>
-      <button type="button" onClick={handleGuestLogin} className="bg-gray-500 text-white px-4 py-2">
-        Continue as Guest
-      </button>
-    </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white shadow-md rounded-lg p-8 w-full max-w-md"
+      >
+        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Login</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="block w-full mb-4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="block w-full mb-6 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+        >
+          Login
+        </button>
+      </form>
+    </div>
   );
 }
 
